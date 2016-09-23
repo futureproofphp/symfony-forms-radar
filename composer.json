@@ -1,0 +1,29 @@
+{
+    "name": "futureproofphp/symfony-forms-radar",
+    "type": "project",
+    "require": {
+        "radar/adr": "~1.0",
+        "relay/middleware": "~1.0",
+        "symfony/config": "^3.1",
+        "symfony/form": "^3.1",
+        "symfony/http-foundation": "^3.1",
+        "symfony/psr-http-message-bridge": "^1.0",
+        "symfony/security-csrf": "^3.1",
+        "symfony/twig-bridge": "^3.1",
+        "symfony/validator": "^3.1",
+        "zendframework/zend-diactoros": "~1.0"
+    },
+    "autoload": {
+        "psr-4": {
+            "FutureProofPhp\\": "src/"
+        }
+    },
+    "license": "GPL-3.0+",
+    "authors": [
+        {
+            "name": "Andrew Shell",
+            "email": "andrew@andrewshell.org"
+        }
+    ],
+    "minimum-stability": "stable"
+}
