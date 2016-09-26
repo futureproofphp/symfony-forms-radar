@@ -73,9 +73,14 @@ class Config extends ContainerConfig
             'options' => ['debug' => true],
         ];
 
+        $di->setters[Twig_Environment::class]['setExtensions'] = new LazyArray([
+            $di->lazyNew(TranslationExtension::class),
+            $di->lazyNew(Twig_Extension_Debug::class),
+            $di->lazyNew(FormExtension::class),
+        ]);
+
         /** TwigRendererEngine */
         $di->params[TwigRendererEngine::class]['defaultThemes'] = [self::DEFAULT_FORM_THEME];
-        $di->setters[TwigRendererEngine::class]['setEnvironment'] = $di->lazyNew(Twig_Environment::class);
 
         /** TwigRenderer */
         $di->params[TwigRenderer::class]['engine'] = $di->lazyNew(TwigRendererEngine::class);
@@ -122,9 +127,6 @@ class Config extends ContainerConfig
 
     public function modify(Container $di)
     {
-        $twig = $di->get('twig:environment');
-        $twig->addExtension($di->newInstance(TranslationExtension::class));
-        $twig->addExtension($di->newInstance(Twig_Extension_Debug::class));
-        $twig->addExtension($di->newInstance(FormExtension::class));
+
     }
 }
