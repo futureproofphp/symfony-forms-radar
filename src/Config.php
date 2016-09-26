@@ -41,7 +41,6 @@ class Config extends ContainerConfig
 
         $di->params[RegistrationInput::class] = [
             'formFactory' => $di->lazyGet('symfony/form:factory'),
-            'httpFoundationFactory' => $di->lazyNew(HttpFoundationFactory::class),
         ];
 
         $di->params[RegistrationResponder::class] = [

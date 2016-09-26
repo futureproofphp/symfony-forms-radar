@@ -8,12 +8,10 @@ use Symfony\Component\Form\FormFactory;
 class RegistrationInput
 {
     private $formFactory;
-    private $httpFoundationFactory;
 
-    public function __construct($formFactory, HttpFoundationFactory $httpFoundationFactory)
+    public function __construct($formFactory)
     {
         $this->formFactory = $formFactory;
-        $this->httpFoundationFactory = $httpFoundationFactory;
     }
 
     public function __invoke(PsrRequest $psrRequest)

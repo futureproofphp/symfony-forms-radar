@@ -30,6 +30,7 @@ $adr->get('getHome', '/', function (Form $form) {
 $adr->post('postHome', '/', function (Form $form) {
     if ($form->isValid()) {
         // Do Something
+        $data = $form->getData();
     }
     return $form;
 })
