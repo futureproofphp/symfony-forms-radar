@@ -3,6 +3,7 @@ namespace FutureProofPhp;
 
 use Aura\Di\Container;
 use Aura\Di\ContainerConfig;
+use Aura\Filter\FilterFactory;
 use Symfony\Bridge\PsrHttpMessage\Factory\HttpFoundationFactory;
 use Symfony\Bridge\Twig\Extension\FormExtension;
 use Symfony\Bridge\Twig\Extension\TranslationExtension;
@@ -36,6 +37,10 @@ class Config extends ContainerConfig
         $di->set('symfony/form:factory:builder', $di->lazyNew(FormFactoryBuilder::class));
         $di->set('symfony/form:factory', $di->lazyGetCall('symfony/form:factory:builder', 'getFormFactory'));
         $di->set('twig:environment', $di->lazyNew(Twig_Environment::class));
+        $di->set('filter:registration', $di->lazy(
+            [$di->lazyNew(FilterFactory::class), 'newSubjectFilter'],
+            RegistrationFilter::class
+        ));
 
         $di->params[RegistrationResponder::class] = [
             'twig' => $di->lazyGet('twig:environment'),
@@ -112,6 +117,8 @@ class Config extends ContainerConfig
             $di->lazyNew(CoreExtension::class),
             $di->lazyNew(CsrfExtension::class),
         ]);
+
+        $di->params[RegistrationPost::class]['filter'] = $di->lazyGet('filter:registration');
     }
 
     public function modify(Container $di)

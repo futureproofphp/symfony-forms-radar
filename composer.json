@@ -11,7 +11,8 @@
         "symfony/security-csrf": "^3.1",
         "symfony/twig-bridge": "^3.1",
         "symfony/validator": "^3.1",
-        "zendframework/zend-diactoros": "~1.0"
+        "zendframework/zend-diactoros": "~1.0",
+        "aura/filter": "^2.2"
     },
     "autoload": {
         "psr-4": {

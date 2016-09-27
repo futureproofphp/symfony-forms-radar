@@ -21,15 +21,13 @@ $adr->middle('Radar\Adr\Handler\RoutingHandler');
 $adr->middle('Radar\Adr\Handler\ActionHandler');
 
 /** Routes */
-$adr->get('getHome', '/', function (array $data) {
-    return $data;
+$adr->get('getHome', '/', function () {
+    return [];
 })
 ->input('FutureProofPhp\RegistrationInput')
 ->responder('FutureProofPhp\RegistrationResponder');
 
-$adr->post('postHome', '/', function (array $data) {
-    return $data;
-})
+$adr->post('postHome', '/', 'FutureProofPhp\RegistrationPost')
 ->input('FutureProofPhp\RegistrationInput')
 ->responder('FutureProofPhp\RegistrationResponder');
 

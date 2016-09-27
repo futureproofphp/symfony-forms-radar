@@ -3,6 +3,7 @@ namespace FutureProofPhp;
 
 use Psr\Http\Message\ServerRequestInterface as Request;
 use Psr\Http\Message\ResponseInterface as Response;
+use Symfony\Component\Form\FormError;
 use Symfony\Component\Form\FormFactory;
 use Twig_Environment;
 
@@ -20,14 +21,17 @@ class RegistrationResponder
     public function __invoke(
         Request $request,
         Response $response,
-        array $data
+        array $payload
     ) {
         $form = $this->formFactory->create(RegistrationType::class);
-        $name = $form->getName();
-        if ('' === $name) {
-            $form->submit($data, true);
-        } elseif (array_key_exists($name, $data)) {
-            $form->submit($data[$name], true);
+        $form->submit($payload['data'], true);
+        if (isset($payload['failures'])) {
+            foreach ($payload['failures'] as $name => $messages) {
+                $element = $form->get($name);
+                foreach ($messages as $message) {
+                    $element->addError(new FormError($message));
+                }
+            }
         }
 
         $response->withHeader('Content-Type', 'text/html');
