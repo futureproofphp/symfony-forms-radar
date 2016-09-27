@@ -24,8 +24,10 @@ class RegistrationResponder
         array $payload
     ) {
         $form = $this->formFactory->create(RegistrationType::class);
-        $form->submit($payload['data'], true);
-        if (isset($payload['failures'])) {
+        if (array_key_exists('data', $payload)) {
+            $form->submit($payload['data'], true);
+        }
+        if (array_key_exists('failures', $payload)) {
             foreach ($payload['failures'] as $name => $messages) {
                 $element = $form->get($name);
                 foreach ($messages as $message) {
