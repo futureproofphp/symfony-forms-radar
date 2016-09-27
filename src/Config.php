@@ -10,7 +10,6 @@ use Symfony\Bridge\Twig\Form\TwigRenderer;
 use Symfony\Bridge\Twig\Form\TwigRendererEngine;
 use Symfony\Component\Form\Extension\Csrf\CsrfExtension;
 use Symfony\Component\Form\Extension\Core\CoreExtension;
-use Symfony\Component\Form\Extension\Validator\ValidatorExtension;
 use Symfony\Component\Form\FormFactoryBuilder;
 use Symfony\Component\Form\Forms;
 use Symfony\Component\HttpFoundation\Session\Session;
@@ -18,7 +17,6 @@ use Symfony\Component\Security\Csrf\CsrfTokenManager;
 use Symfony\Component\Security\Csrf\TokenGenerator\UriSafeTokenGenerator;
 use Symfony\Component\Security\Csrf\TokenStorage\SessionTokenStorage;
 use Symfony\Component\Translation\Loader\XliffFileLoader;
-use Symfony\Component\Validator\Validation;
 use Twig_Environment;
 use Twig_Extension_Debug;
 use Twig_Loader_Filesystem;
@@ -39,12 +37,9 @@ class Config extends ContainerConfig
         $di->set('symfony/form:factory', $di->lazyGetCall('symfony/form:factory:builder', 'getFormFactory'));
         $di->set('twig:environment', $di->lazyNew(Twig_Environment::class));
 
-        $di->params[RegistrationInput::class] = [
-            'formFactory' => $di->lazyGet('symfony/form:factory'),
-        ];
-
         $di->params[RegistrationResponder::class] = [
             'twig' => $di->lazyGet('twig:environment'),
+            'formFactory' => $di->lazyGet('symfony/form:factory'),
         ];
 
         /** SessionTokenStorage */
@@ -112,16 +107,10 @@ class Config extends ContainerConfig
         /** TranslationExtension */
         $di->params[TranslationExtension::class]['translator'] = $di->lazyNew(Translator::class);
 
-        /** ValidatorExtension */
-        $di->params[ValidatorExtension::class] = [
-            'validator' => $di->lazy([Validation::class, 'createValidator']),
-        ];
-
         /** FormFactoryBuilder */
         $di->setters[FormFactoryBuilder::class]['addExtensions'] = new LazyArray([
             $di->lazyNew(CoreExtension::class),
             $di->lazyNew(CsrfExtension::class),
-            $di->lazyNew(ValidatorExtension::class),
         ]);
     }
 
