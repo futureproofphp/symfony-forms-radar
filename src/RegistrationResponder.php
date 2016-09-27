@@ -23,7 +23,12 @@ class RegistrationResponder
         array $data
     ) {
         $form = $this->formFactory->create(RegistrationType::class);
-        $form->handleRequest();
+        $name = $form->getName();
+        if ('' === $name) {
+            $form->submit($data, true);
+        } elseif (array_key_exists($name, $data)) {
+            $form->submit($data[$name], true);
+        }
 
         $response->withHeader('Content-Type', 'text/html');
         $response->getBody()->write($this->twig->render('index.html.twig', array(
